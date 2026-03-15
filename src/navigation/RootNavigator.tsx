@@ -1,7 +1,7 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Receipt, Users, DollarSign, User } from 'lucide-react-native';
+import { Receipt, Users, DollarSign, User, House, HandCoins } from 'lucide-react-native';
 import { useAuthStore } from '../store/authStore';
 import LoginScreen from '../screens/auth/LoginScreen';
 import SignupScreen from '../screens/auth/SignupScreen';
@@ -45,9 +45,9 @@ function MainNavigator() {
           backgroundColor: '#ffffff',
           borderTopWidth: 1,
           borderTopColor: '#e5e7eb',
-          height: 60,
-          paddingBottom: 8,
-          paddingTop: 8,
+          height: 100,
+          paddingBottom: 10,
+          paddingTop: 10,
         },
         tabBarLabelStyle: {
           fontSize: 12,
@@ -59,8 +59,9 @@ function MainNavigator() {
         name="Home"
         component={HomeScreen}
         options={{
+           headerShown: false,
           tabBarIcon: ({ color, size }) => (
-            <Receipt color={color} size={size} />
+            <House color={color} size={size} />
           ),
         }}
       />
@@ -78,7 +79,7 @@ function MainNavigator() {
         component={BalancesScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <DollarSign color={color} size={size} />
+            <HandCoins color={color} size={size} />
           ),
         }}
       />
