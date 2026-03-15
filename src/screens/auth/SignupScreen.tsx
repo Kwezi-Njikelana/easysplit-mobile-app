@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -9,74 +9,73 @@ import {
   ActivityIndicator,
   Alert,
   ScrollView,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { ArrowLeft, Mail, Lock, User } from 'lucide-react-native';
-import { useAuthStore } from '../../store/authStore';
-import { AuthStackScreenProps } from '../../navigation/types';
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { ArrowLeft, Mail, Lock, User, EyeOff, Eye } from "lucide-react-native";
+import { useAuthStore } from "../../store/authStore";
+import { AuthStackScreenProps } from "../../navigation/types";
 
-type Props = AuthStackScreenProps<'Signup'>;
+type Props = AuthStackScreenProps<"Signup">;
 
 export default function SignupScreen({ navigation }: Props) {
-  const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const { signup, isLoading } = useAuthStore();
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSignup = async () => {
     if (!fullName.trim()) {
-      Alert.alert('Error', 'Please enter your full name');
+      Alert.alert("Error", "Please enter your full name");
       return;
     }
 
     if (!email.trim()) {
-      Alert.alert('Error', 'Please enter your email');
+      Alert.alert("Error", "Please enter your email");
       return;
     }
 
-    if (!email.includes('@')) {
-      Alert.alert('Error', 'Please enter a valid email address');
+    if (!email.includes("@")) {
+      Alert.alert("Error", "Please enter a valid email address");
       return;
     }
 
     if (!password) {
-      Alert.alert('Error', 'Please enter a password');
+      Alert.alert("Error", "Please enter a password");
       return;
     }
 
     if (password.length < 8) {
-      Alert.alert('Error', 'Password must be at least 8 characters');
+      Alert.alert("Error", "Password must be at least 8 characters");
       return;
     }
 
     if (password !== confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match');
+      Alert.alert("Error", "Passwords do not match");
       return;
     }
 
     try {
       await signup(email, password, fullName);
-      // Navigation will happen automatically through the auth state change
-    } catch (error) {
-      Alert.alert('Error', 'Signup failed. Please try again.');
+    } catch (error: any) {
+      Alert.alert("Error", error.message || "Signup failed. Please try again.");
     }
   };
 
   return (
     <SafeAreaView className="flex-1 bg-white">
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
         className="flex-1"
       >
-        <ScrollView 
+        <ScrollView
           className="flex-1"
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-         
           <View className="px-6 py-4">
-            <TouchableOpacity 
+            <TouchableOpacity
               onPress={() => navigation.goBack()}
               className="w-10 h-10 items-center justify-center"
               disabled={isLoading}
@@ -85,14 +84,11 @@ export default function SignupScreen({ navigation }: Props) {
             </TouchableOpacity>
           </View>
 
-        
           <View className="px-6 mb-8">
             <Text className="text-4xl font-bold text-gray-900 mb-2">
               Create Account
             </Text>
-            <Text className="text-gray-600 text-lg">
-              Join EasySplit and start splitting expenses
-            </Text>
+            
           </View>
 
           {/* Form */}
@@ -102,7 +98,6 @@ export default function SignupScreen({ navigation }: Props) {
                 Full Name
               </Text>
               <View className="flex-row items-center bg-gray-50 px-4 py-4 rounded-2xl border border-gray-200">
-                <User color="#9ca3af" size={20} />
                 <TextInput
                   className="flex-1 ml-3 text-base"
                   placeholder="John Doe"
@@ -115,11 +110,10 @@ export default function SignupScreen({ navigation }: Props) {
             </View>
 
             <View>
-              <Text className="text-gray-700 font-semibold mb-2 text-sm">
+              <Text className="text-gray-700 mt-4 font-semibold mb-2 text-sm">
                 Email Address
               </Text>
               <View className="flex-row items-center bg-gray-50 px-4 py-4 rounded-2xl border border-gray-200">
-                <Mail color="#9ca3af" size={20} />
                 <TextInput
                   className="flex-1 ml-3 text-base"
                   placeholder="john@example.com"
@@ -133,36 +127,56 @@ export default function SignupScreen({ navigation }: Props) {
             </View>
 
             <View>
-              <Text className="text-gray-700 font-semibold mb-2 text-sm">
+              <Text className="text-gray-700 mt-4 font-semibold mb-2 text-sm">
                 Password
               </Text>
               <View className="flex-row items-center bg-gray-50 px-4 py-4 rounded-2xl border border-gray-200">
-                <Lock color="#9ca3af" size={20} />
                 <TextInput
                   className="flex-1 ml-3 text-base"
-                  placeholder="At least 6 characters"
+                  placeholder="At least 8 characters"
                   value={password}
                   onChangeText={setPassword}
-                  secureTextEntry
+                  secureTextEntry={!showPassword}
                   editable={!isLoading}
                 />
+                <TouchableOpacity
+                  onPress={() => setShowPassword((prev) => !prev)}
+                  className="px-4"
+                  disabled={isLoading}
+                >
+                  {showPassword ? (
+                    <EyeOff size={20} color="#9ca3af" />
+                  ) : (
+                    <Eye size={20} color="#9ca3af" />
+                  )}
+                </TouchableOpacity>
               </View>
             </View>
 
             <View>
-              <Text className="text-gray-700 font-semibold mb-2 text-sm">
+              <Text className="text-gray-700 mt-4 font-semibold mb-2 text-sm">
                 Confirm Password
               </Text>
               <View className="flex-row items-center bg-gray-50 px-4 py-4 rounded-2xl border border-gray-200">
-                <Lock color="#9ca3af" size={20} />
                 <TextInput
                   className="flex-1 ml-3 text-base"
                   placeholder="Re-enter your password"
                   value={confirmPassword}
                   onChangeText={setConfirmPassword}
-                  secureTextEntry
+                  secureTextEntry={!showPassword}
                   editable={!isLoading}
                 />
+                <TouchableOpacity
+                  onPress={() => setShowPassword((prev) => !prev)}
+                  className="px-4"
+                  disabled={isLoading}
+                >
+                  {showPassword ? (
+                    <EyeOff size={20} color="#9ca3af" />
+                  ) : (
+                    <Eye size={20} color="#9ca3af" />
+                  )}
+                </TouchableOpacity>
               </View>
             </View>
 
@@ -181,7 +195,7 @@ export default function SignupScreen({ navigation }: Props) {
             </View> */}
 
             <TouchableOpacity
-              className="bg-emerald-500 py-4 rounded-2xl items-center mb-4"
+              className="bg-emerald-500 py-4 mt-6 rounded-2xl items-center mb-4"
               onPress={handleSignup}
               disabled={isLoading}
               style={{
@@ -199,8 +213,8 @@ export default function SignupScreen({ navigation }: Props) {
 
             <View className="flex-row items-center justify-center py-4 mb-6">
               <Text className="text-gray-600">Already have an account? </Text>
-              <TouchableOpacity 
-                onPress={() => navigation.navigate('Login')}
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Login")}
                 disabled={isLoading}
               >
                 <Text className="text-emerald-600 font-bold">Sign In</Text>

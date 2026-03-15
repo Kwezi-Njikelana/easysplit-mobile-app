@@ -1,62 +1,94 @@
-import { create } from 'zustand';
-import { User } from '../types';
-import { isValidElement } from 'react';
+import { create } from "zustand";
+import { User } from "../types";
+import { supabase } from "../supabase-client";
 
 interface AuthState {
-    user: User | null;
-    isAuthenticated: boolean;
-    isLoading: boolean;
-    login: (email: string, password: string) => Promise<void>;
-    signup: (fullName: string, email: string, password: string) => Promise<void>;
-    logout: () => void;
-    setUser: (user: User) => void;
-
+  user: User | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  login: (email: string, password: string) => Promise<void>;
+  signup: (email: string, password: string, fullName: string) => Promise<void>;
+  logout: () => void;
+  setUser: (user: User) => void;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   isAuthenticated: false,
   isLoading: false,
-  
+
   login: async (email: string, password: string) => {
     set({ isLoading: true });
     try {
-      // TODO: Implement real authentication
-      // For now, use demo user
-      const demoUser: User = {
-        id: '1',
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
-        fullName: 'Demo User',
-        createdAt: new Date().toISOString(),
-      };
-      set({ user: demoUser, isAuthenticated: true, isLoading: false });
+        password,
+      });
+      if (error) throw error;
+
+      const authUser = data.user;
+
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", authUser.id)
+        .single();
+
+        if (profileError ) throw profileError
+
+     const user: User = {
+      id: authUser.id,
+      email: authUser.email!,
+      fullName: profile.name,
+      avatar: profile.avatar ?? undefined,
+      phoneNumber: profile.phone_number ?? undefined,
+      createdAt: profile.created_at,
+    };
+
+      set({ user, isAuthenticated: true, isLoading: false });
     } catch (error) {
       set({ isLoading: false });
       throw error;
     }
   },
-  
+
   signup: async (email: string, password: string, fullName: string) => {
     set({ isLoading: true });
     try {
-      // TODO: Implement real signup
-      const newUser: User = {
-        id: Date.now().toString(),
+      const { data, error } = await supabase.auth.signUp({
         email,
-        fullName,
-        createdAt: new Date().toISOString(),
-      };
-      set({ user: newUser, isAuthenticated: true, isLoading: false });
+        password,
+        options: {
+          data: {
+            name: fullName,
+          },
+        },
+      });
+      if (error) throw error;
+
+
+      const authUser = data.user;
+    if (!authUser) throw new Error("User creation failed");
+
+
+     const user: User = {
+      id: authUser.id,
+      email: authUser.email!,
+      fullName: fullName,
+      createdAt: authUser.created_at,
+    };
+      set({ user, isAuthenticated: true, isLoading: false });
     } catch (error) {
       set({ isLoading: false });
       throw error;
     }
   },
-  
-  logout: () => {
+
+  logout: async () => {
+    await supabase.auth.signOut();
     set({ user: null, isAuthenticated: false });
   },
-  
+
   setUser: (user: User) => {
     set({ user, isAuthenticated: true });
   },

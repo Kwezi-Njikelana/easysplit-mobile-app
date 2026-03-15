@@ -10,7 +10,7 @@ import {
   Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Receipt, SeparatorVertical } from 'lucide-react-native';
+import { Eye, EyeOff, SeparatorVertical } from 'lucide-react-native';
 import { useAuthStore } from '../../store/authStore';
 import { AuthStackScreenProps } from '../../navigation/types';
 
@@ -20,36 +20,27 @@ export default function LoginScreen({ navigation }: Props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { login, isLoading } = useAuthStore();
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async () => {
     if (!email || !password) {
       Alert.alert('Error', 'Please enter email and password');
       return;
     }
-
     try {
       await login(email, password);
-    } catch (error) {
-      Alert.alert('Error', 'Login failed. Please try again.');
-    }
-  };
-
-  const handleGuestLogin = async () => {
-    try {
-      await login('guest@easysplit.com', 'demo123');
-    } catch (error) {
-      Alert.alert('Error', 'Guest login failed');
+    } catch (error: any) {
+      Alert.alert('Login Failed', error?.message ?? 'Please check your credentials and try again.');
     }
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-gradient-to-br from-emerald-50 to-teal-50">
+    <SafeAreaView className="flex-1 bg-white">
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         className="flex-1"
       >
         <View className="flex-1 justify-center px-6">
-          
           <View className="items-center mb-12">
             <View className="w-20 h-20 bg-emerald-500 rounded-3xl items-center justify-center mb-4">
               <SeparatorVertical color="white" size={40} />
@@ -64,7 +55,7 @@ export default function LoginScreen({ navigation }: Props) {
 
           <View className="space-y-4 mb-6">
             <TextInput
-              className="bg-white px-4 py-4  mb-4 rounded-2xl border border-gray-200 text-base"
+              className="bg-white px-4 py-4 mb-4 rounded-2xl border border-gray-200 text-base"
               placeholder="Email"
               value={email}
               onChangeText={setEmail}
@@ -72,14 +63,29 @@ export default function LoginScreen({ navigation }: Props) {
               keyboardType="email-address"
               editable={!isLoading}
             />
+
+            <View className="flex-row items-center bg-white rounded-2xl border border-gray-200">
+
             <TextInput
-              className="bg-white px-4 py-4 rounded-2xl border border-gray-200 text-base"
+              className="flex-1 px-4 py-4 text-base"
               placeholder="Password"
               value={password}
               onChangeText={setPassword}
-              secureTextEntry
+              secureTextEntry={!showPassword}
               editable={!isLoading}
             />
+            <TouchableOpacity
+            onPress={() => setShowPassword(prev => !prev)}
+            className="px-4"
+            disabled={isLoading}
+            >
+              {showPassword 
+                ? <EyeOff size={20} color="#9ca3af" />
+                  : <Eye size={20} color="#9ca3af" />
+                }
+
+            </TouchableOpacity>
+            </View>
           </View>
 
           <TouchableOpacity
@@ -101,16 +107,6 @@ export default function LoginScreen({ navigation }: Props) {
           >
             <Text className="text-gray-700 font-bold text-lg">
               Create Account
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            className="items-center"
-            onPress={handleGuestLogin}
-            disabled={isLoading}
-          >
-            <Text className="text-emerald-600 font-semibold">
-              Continue as Guest →
             </Text>
           </TouchableOpacity>
         </View>
