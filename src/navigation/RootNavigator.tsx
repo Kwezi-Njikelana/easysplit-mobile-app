@@ -6,7 +6,6 @@ import { useAuthStore } from '../store/authStore';
 import LoginScreen from '../screens/auth/LoginScreen';
 import SignupScreen from '../screens/auth/SignupScreen';
 import HomeScreen from '../screens/home/HomeScreen';
-import GroupsScreen from '../screens/groups/GroupsScreen';
 import BalancesScreen from '../screens/balances/BalancesScreen';
 import ProfileScreen from '../screens/profile/ProfileScreen';
 import EditReceiptScreen from '../screens/receipt/EditReceiptScreen';
@@ -65,15 +64,7 @@ function MainNavigator() {
           ),
         }}
       />
-      <MainTab.Screen
-        name="Groups"
-        component={GroupsScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Users color={color} size={size} />
-          ),
-        }}
-      />
+      
       <MainTab.Screen
         name="Balances"
         component={BalancesScreen}
