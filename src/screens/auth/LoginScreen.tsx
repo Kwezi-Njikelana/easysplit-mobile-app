@@ -23,14 +23,17 @@ export default function LoginScreen({ navigation }: Props) {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async () => {
-    if (!email || !password) {
-      Alert.alert('Error', 'Please enter email and password');
+
+    const trimmedEmail = email.trim();
+    
+    if (!trimmedEmail || !password) {
+      Alert.alert('Missing fields', 'Please enter both your email and password.');
       return;
     }
     try {
-      await login(email, password);
+      await login(trimmedEmail, password);
     } catch (error: any) {
-      Alert.alert('Login Failed', error?.message ?? 'Please check your credentials and try again.');
+      Alert.alert('Login Failed', error?.message ?? 'Something went wrong. Please try again.');
     }
   };
 
