@@ -27,39 +27,39 @@ export default function SignupScreen({ navigation }: Props) {
 
   const handleSignup = async () => {
     if (!fullName.trim()) {
-      Alert.alert("Error", "Please enter your full name");
+      Alert.alert('Signup Failed', 'Please enter your full name');
       return;
     }
 
     if (!email.trim()) {
-      Alert.alert("Error", "Please enter your email");
+      Alert.alert("Signup Failed", "Please enter your email");
       return;
     }
 
     if (!email.includes("@")) {
-      Alert.alert("Error", "Please enter a valid email address");
+      Alert.alert("Signup Failed", "Please enter a valid email address");
       return;
     }
 
     if (!password) {
-      Alert.alert("Error", "Please enter a password");
+      Alert.alert("Signup Failed", "Please enter a password");
       return;
     }
 
     if (password.length < 8) {
-      Alert.alert("Error", "Password must be at least 8 characters");
+      Alert.alert("Signup Failed", "Password must be at least 8 characters");
       return;
     }
 
     if (password !== confirmPassword) {
-      Alert.alert("Error", "Passwords do not match");
+      Alert.alert("Signup Failed", "Passwords do not match");
       return;
     }
 
     try {
       await signup(email, password, fullName);
     } catch (error: any) {
-      Alert.alert("Error", error.message || "Signup failed. Please try again.");
+      Alert.alert('Signup Failed', error?.message ?? 'Something went wrong. Please try again.');
     }
   };
 
