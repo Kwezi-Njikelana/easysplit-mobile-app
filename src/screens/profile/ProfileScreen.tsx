@@ -6,8 +6,12 @@ import {
   TouchableOpacity,
   StatusBar,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Constants from "expo-constants";
 import { useAuthStore } from "../../store/authStore";
+import { RootStackParamList } from "../../navigation/types";
 import { ChevronRight } from "lucide-react-native";
 
 function Row({
@@ -37,10 +41,7 @@ function Row({
       {value ? (
         <Text className="text-sm text-zinc-400">{value}</Text>
       ) : (
-        <Text style={{ color: "#d4d4d4", fontSize: 18, lineHeight: 22 }}>
-          {" "}
-          <ChevronRight size={24} color="#d1d5db" />
-        </Text>
+        <ChevronRight size={24} color="#d1d5db" />
       )}
     </TouchableOpacity>
   );
@@ -57,7 +58,11 @@ function SectionLabel({ text }: { text: string }) {
   );
 }
 
+const APP_VERSION = Constants.expoConfig?.version ?? "1.0.0";
+
 export default function ProfileScreen() {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { user, logout } = useAuthStore();
 
   const fullName = user?.fullName ?? "Anonymous";
@@ -124,6 +129,7 @@ export default function ProfileScreen() {
             {/* Edit pill */}
             <TouchableOpacity
               activeOpacity={0.7}
+              onPress={() => navigation.navigate("EditProfile")}
               style={{
                 paddingHorizontal: 14,
                 paddingVertical: 6,
@@ -141,13 +147,46 @@ export default function ProfileScreen() {
             </TouchableOpacity>
           </View>
 
+          <SectionLabel text="Account" />
+          <Row
+            label="Edit Profile"
+            onPress={() => navigation.navigate("EditProfile")}
+          />
+
           <SectionLabel text="Settings" />
-          <Row label="Notifications" />
-          <Row label="Password & Security" />
+          <Row
+            label="Notifications"
+            onPress={() => navigation.navigate("NotificationSettings")}
+          />
+
+          <SectionLabel text="Security" />
+          <Row
+            label="Change Password"
+            onPress={() => navigation.navigate("SecuritySettings")}
+          />
 
           <SectionLabel text="Support" />
-          <Row label="Help & FAQ" />
-          <Row label="Send Feedback" />
+          <Row
+            label="Help & Support"
+            onPress={() => navigation.navigate("HelpSupport")}
+          />
+
+          <SectionLabel text="Legal" />
+          <Row
+            label="Privacy Policy"
+            onPress={() => navigation.navigate("PrivacyPolicy")}
+          />
+          <Row
+            label="Terms & Conditions"
+            onPress={() => navigation.navigate("TermsConditions")}
+          />
+
+          <SectionLabel text="Account Actions" />
+          <Row
+            label="Delete Account"
+            danger
+            onPress={() => navigation.navigate("DeleteAccount")}
+          />
 
           <View className="mt-10">
             <TouchableOpacity
@@ -163,7 +202,7 @@ export default function ProfileScreen() {
               }}
             >
               <Text className="text-lg border-raspberryRedColor font-semibold bg-white text-raspberryRedColor">
-                Sign out
+                Log Out
               </Text>
             </TouchableOpacity>
           </View>
@@ -172,7 +211,7 @@ export default function ProfileScreen() {
             className="text-center text-xs mt-8"
             style={{ color: "#d4d4d4" }}
           >
-            EasySpit v1.0.0
+            EasySplit v{APP_VERSION}
           </Text>
         </View>
       </ScrollView>
