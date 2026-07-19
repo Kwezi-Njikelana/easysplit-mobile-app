@@ -8,6 +8,13 @@ export type RootStackParamList = {
   ScanReceipt: { groupId: string };
   EditReceipt: { receiptId: string };
   AssignItems: { receiptId: string };
+  EditProfile: undefined;
+  NotificationSettings: undefined;
+  SecuritySettings: undefined;
+  HelpSupport: undefined;
+  PrivacyPolicy: undefined;
+  TermsConditions: undefined;
+  DeleteAccount: undefined;
 };
 
 export type AuthStackParamList = {
