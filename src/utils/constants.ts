@@ -1,14 +1,14 @@
 export const COLORS = {
   primary: {
-    50: "#ecfdf5",
-    100: "#d1fae5",
-    500: "#10b981",
-    600: "#059669",
-    700: "#047857",
+    50: "#e6fffc",
+    100: "#b8fff8",
+    500: "#22e2d2",
+    600: "#19bcd5",
+    700: "#0d8178",
   },
   memberColors: [
     "bg-blue-500",
-    "bg-green-500",
+    "bg-cyan-500",
     "bg-purple-500",
     "bg-pink-500",
     "bg-yellow-500",

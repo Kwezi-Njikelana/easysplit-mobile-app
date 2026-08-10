@@ -1,18 +1,27 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Receipt, Users, DollarSign, User } from 'lucide-react-native';
+import { Receipt, Users, DollarSign, User, House, HandCoins } from 'lucide-react-native';
 import { useAuthStore } from '../store/authStore';
 import LoginScreen from '../screens/auth/LoginScreen';
 import SignupScreen from '../screens/auth/SignupScreen';
 import HomeScreen from '../screens/home/HomeScreen';
-import GroupsScreen from '../screens/groups/GroupsScreen';
 import BalancesScreen from '../screens/balances/BalancesScreen';
 import ProfileScreen from '../screens/profile/ProfileScreen';
+import {
+  DeleteAccountScreen,
+  EditProfileScreen,
+  HelpSupportScreen,
+  NotificationSettingsScreen,
+  PrivacyPolicyScreen,
+  SecuritySettingsScreen,
+  TermsConditionsScreen,
+} from '../screens/profile/ProfileDetailScreens';
 import EditReceiptScreen from '../screens/receipt/EditReceiptScreen';
 import AssignItemsScreen from '../screens/receipt/AssignItemsScreen';
 import { RootStackParamList, AuthStackParamList, MainTabParamList } from './types';
 import ScanReceiptScreen from '../screens/receipt/ScanReceiptScreen';
+import { THEME } from '../utils/theme';
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 const AuthStack = createNativeStackNavigator<AuthStackParamList>();
@@ -39,15 +48,15 @@ function MainNavigator() {
     <MainTab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#10b981',
-        tabBarInactiveTintColor: '#6b7280',
+        tabBarActiveTintColor: THEME.accent.cyan,
+        tabBarInactiveTintColor: 'rgba(245,255,253,0.45)',
         tabBarStyle: {
-          backgroundColor: '#ffffff',
+          backgroundColor: THEME.background.panel,
           borderTopWidth: 1,
-          borderTopColor: '#e5e7eb',
-          height: 60,
-          paddingBottom: 8,
-          paddingTop: 8,
+          borderTopColor: THEME.border.subtle,
+          height: 100,
+          paddingBottom: 10,
+          paddingTop: 10,
         },
         tabBarLabelStyle: {
           fontSize: 12,
@@ -59,26 +68,19 @@ function MainNavigator() {
         name="Home"
         component={HomeScreen}
         options={{
+           headerShown: false,
           tabBarIcon: ({ color, size }) => (
-            <Receipt color={color} size={size} />
+            <House color={color} size={size} />
           ),
         }}
       />
-      <MainTab.Screen
-        name="Groups"
-        component={GroupsScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Users color={color} size={size} />
-          ),
-        }}
-      />
+      
       <MainTab.Screen
         name="Balances"
         component={BalancesScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <DollarSign color={color} size={size} />
+            <HandCoins color={color} size={size} />
           ),
         }}
       />
@@ -118,7 +120,7 @@ export default function RootNavigator() {
               options={{
                 headerShown: true,
                 title: 'Scan Receipt',
-                headerStyle: { backgroundColor: '#10b981' },
+                headerStyle: { backgroundColor: THEME.background.panel },
                 headerTintColor: '#fff',
               }}
             />
@@ -138,6 +140,13 @@ export default function RootNavigator() {
                 title: 'Assign Items',
               }}
             />
+            <RootStack.Screen name="EditProfile" component={EditProfileScreen} options={{ headerShown: false }} />
+            <RootStack.Screen name="NotificationSettings" component={NotificationSettingsScreen} options={{ headerShown: false }} />
+            <RootStack.Screen name="SecuritySettings" component={SecuritySettingsScreen} options={{ headerShown: false }} />
+            <RootStack.Screen name="HelpSupport" component={HelpSupportScreen} options={{ headerShown: false }} />
+            <RootStack.Screen name="PrivacyPolicy" component={PrivacyPolicyScreen} options={{ headerShown: false }} />
+            <RootStack.Screen name="TermsConditions" component={TermsConditionsScreen} options={{ headerShown: false }} />
+            <RootStack.Screen name="DeleteAccount" component={DeleteAccountScreen} options={{ headerShown: false }} />
           </RootStack.Group>
         </>
       )}
