@@ -23,11 +23,11 @@ export default function HomeScreen() {
       <StatusBar barStyle="light-content" />
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ flexGrow: 1, paddingBottom: 48 }}
+        contentContainerStyle={{ paddingBottom: 48 }}
       >
         <HomeHeader firstName={firstName} />
 
-        <View className="bg-gray-50 rounded-t-3xl -mt-4 px-5 pt-7 flex-grow">
+        <View className="bg-gray-50 rounded-t-3xl -mt-4 px-5 pt-7">
           <ScanCTA />
           <ManualEntryButton />
           <RecentSplitsList splits={mockRecentSplits} />

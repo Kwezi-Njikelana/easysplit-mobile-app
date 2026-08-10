@@ -8,6 +8,15 @@ import SignupScreen from '../screens/auth/SignupScreen';
 import HomeScreen from '../screens/home/HomeScreen';
 import BalancesScreen from '../screens/balances/BalancesScreen';
 import ProfileScreen from '../screens/profile/ProfileScreen';
+import {
+  DeleteAccountScreen,
+  EditProfileScreen,
+  HelpSupportScreen,
+  NotificationSettingsScreen,
+  PrivacyPolicyScreen,
+  SecuritySettingsScreen,
+  TermsConditionsScreen,
+} from '../screens/profile/ProfileDetailScreens';
 import EditReceiptScreen from '../screens/receipt/EditReceiptScreen';
 import AssignItemsScreen from '../screens/receipt/AssignItemsScreen';
 import { RootStackParamList, AuthStackParamList, MainTabParamList } from './types';
@@ -130,6 +139,13 @@ export default function RootNavigator() {
                 title: 'Assign Items',
               }}
             />
+            <RootStack.Screen name="EditProfile" component={EditProfileScreen} options={{ headerShown: false }} />
+            <RootStack.Screen name="NotificationSettings" component={NotificationSettingsScreen} options={{ headerShown: false }} />
+            <RootStack.Screen name="SecuritySettings" component={SecuritySettingsScreen} options={{ headerShown: false }} />
+            <RootStack.Screen name="HelpSupport" component={HelpSupportScreen} options={{ headerShown: false }} />
+            <RootStack.Screen name="PrivacyPolicy" component={PrivacyPolicyScreen} options={{ headerShown: false }} />
+            <RootStack.Screen name="TermsConditions" component={TermsConditionsScreen} options={{ headerShown: false }} />
+            <RootStack.Screen name="DeleteAccount" component={DeleteAccountScreen} options={{ headerShown: false }} />
           </RootStack.Group>
         </>
       )}
