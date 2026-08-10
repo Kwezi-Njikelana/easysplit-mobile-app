@@ -11,7 +11,9 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { LinearGradient } from "expo-linear-gradient";
 import { useAuthStore } from "../../store/authStore";
+import { THEME } from "../../utils/theme";
 
 function PageShell({
   eyebrow = "Profile",
@@ -23,23 +25,32 @@ function PageShell({
   children: React.ReactNode;
 }) {
   return (
-    <SafeAreaView className="flex-1 bg-zinc-950" edges={["top"]}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: THEME.background.base }} edges={["top"]}>
       <StatusBar barStyle="light-content" />
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ flexGrow: 1, paddingBottom: 48 }}
-      >
+      <LinearGradient colors={THEME.background.upper} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0.9 }} style={{ flex: 1 }}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1, paddingBottom: 48 }}>
         <View className="px-5 pt-6 pb-10">
-          <Text className="text-emerald-400 text-base mb-1 tracking-wide">
+          <Text className="text-base mb-1 tracking-wide" style={{ color: THEME.accent.cyan }}>
             {eyebrow}
           </Text>
           <Text className="text-white text-3xl font-bold">{title}</Text>
         </View>
 
-        <View className="bg-gray-50 rounded-t-3xl -mt-4 px-5 pt-8 flex-grow">
+        <LinearGradient
+          colors={THEME.background.lower}
+          style={{
+            borderTopLeftRadius: 28,
+            borderTopRightRadius: 28,
+            marginTop: -16,
+            paddingHorizontal: 20,
+            paddingTop: 32,
+            flexGrow: 1,
+          }}
+        >
           {children}
-        </View>
+        </LinearGradient>
       </ScrollView>
+      </LinearGradient>
     </SafeAreaView>
   );
 }
@@ -48,7 +59,7 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
     <Text
       className="text-xs font-semibold uppercase tracking-widest mb-2 mt-5"
-      style={{ color: "#a3a3a3" }}
+      style={{ color: THEME.text.muted }}
     >
       {children}
     </Text>
@@ -70,7 +81,7 @@ function Field({
 }) {
   return (
     <View style={{ marginBottom: 14 }}>
-      <Text style={{ color: "#71717a", fontSize: 13, marginBottom: 7 }}>
+      <Text style={{ color: THEME.text.secondary, fontSize: 13, marginBottom: 7 }}>
         {label}
       </Text>
       <TextInput
@@ -80,11 +91,11 @@ function Field({
         secureTextEntry={secureTextEntry}
         autoCapitalize="none"
         style={{
-          backgroundColor: "#fff",
+          backgroundColor: THEME.background.mutedCard,
           borderWidth: 1,
-          borderColor: "#e4e4e7",
+          borderColor: THEME.border.subtle,
           borderRadius: 16,
-          color: "#18181b",
+          color: THEME.text.primary,
           fontSize: 15,
           paddingHorizontal: 14,
           paddingVertical: 13,
@@ -108,16 +119,20 @@ function PrimaryButton({
       activeOpacity={0.75}
       onPress={onPress}
       style={{
-        alignItems: "center",
-        backgroundColor: danger ? "#ef4444" : "#10b981",
         borderRadius: 16,
         marginTop: 8,
-        paddingVertical: 15,
+        overflow: "hidden",
       }}
     >
-      <Text style={{ color: "#fff", fontSize: 16, fontWeight: "700" }}>
-        {label}
-      </Text>
+      {danger ? (
+        <View style={{ alignItems: "center", backgroundColor: THEME.accent.danger, paddingVertical: 15 }}>
+          <Text style={{ color: "#fff", fontSize: 16, fontWeight: "700" }}>{label}</Text>
+        </View>
+      ) : (
+        <LinearGradient colors={THEME.background.button} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={{ alignItems: "center", paddingVertical: 15 }}>
+          <Text style={{ color: THEME.text.dark, fontSize: 16, fontWeight: "700" }}>{label}</Text>
+        </LinearGradient>
+      )}
     </TouchableOpacity>
   );
 }
@@ -132,18 +147,18 @@ function InfoBlock({
   return (
     <View
       style={{
-        backgroundColor: "#fff",
-        borderColor: "#f0f0f0",
+        backgroundColor: THEME.background.mutedCard,
+        borderColor: THEME.border.subtle,
         borderRadius: 20,
         borderWidth: 1,
         marginBottom: 12,
         padding: 16,
       }}
     >
-      <Text style={{ color: "#18181b", fontSize: 16, fontWeight: "700" }}>
+      <Text style={{ color: THEME.text.primary, fontSize: 16, fontWeight: "700" }}>
         {title}
       </Text>
-      <Text style={{ color: "#71717a", fontSize: 14, lineHeight: 21, marginTop: 6 }}>
+      <Text style={{ color: THEME.text.secondary, fontSize: 14, lineHeight: 21, marginTop: 6 }}>
         {body}
       </Text>
     </View>
@@ -165,8 +180,8 @@ function ToggleRow({
     <View
       style={{
         alignItems: "center",
-        backgroundColor: "#fff",
-        borderColor: "#f0f0f0",
+        backgroundColor: THEME.background.mutedCard,
+        borderColor: THEME.border.subtle,
         borderRadius: 20,
         borderWidth: 1,
         flexDirection: "row",
@@ -176,18 +191,18 @@ function ToggleRow({
       }}
     >
       <View style={{ flex: 1 }}>
-        <Text style={{ color: "#18181b", fontSize: 15, fontWeight: "700" }}>
+        <Text style={{ color: THEME.text.primary, fontSize: 15, fontWeight: "700" }}>
           {label}
         </Text>
-        <Text style={{ color: "#71717a", fontSize: 13, lineHeight: 19, marginTop: 3 }}>
+        <Text style={{ color: THEME.text.secondary, fontSize: 13, lineHeight: 19, marginTop: 3 }}>
           {description}
         </Text>
       </View>
       <Switch
         value={value}
         onValueChange={onValueChange}
-        trackColor={{ false: "#e4e4e7", true: "#a7f3d0" }}
-        thumbColor={value ? "#10b981" : "#f4f4f5"}
+        trackColor={{ false: "rgba(255,255,255,0.12)", true: "rgba(34,226,210,0.42)" }}
+        thumbColor={value ? THEME.accent.cyan : "#8b9491"}
       />
     </View>
   );
@@ -210,8 +225,8 @@ export function EditProfileScreen() {
       <View
         style={{
           alignItems: "center",
-          backgroundColor: "#fff",
-          borderColor: "#f0f0f0",
+          backgroundColor: THEME.background.mutedCard,
+          borderColor: THEME.border.subtle,
           borderRadius: 24,
           borderWidth: 1,
           marginBottom: 20,
@@ -221,7 +236,9 @@ export function EditProfileScreen() {
         <View
           style={{
             alignItems: "center",
-            backgroundColor: "#18181b",
+            backgroundColor: THEME.background.chip,
+            borderWidth: 1,
+            borderColor: THEME.border.glow,
             borderRadius: 36,
             height: 72,
             justifyContent: "center",
@@ -237,7 +254,7 @@ export function EditProfileScreen() {
               .toUpperCase() || "ES"}
           </Text>
         </View>
-        <Text style={{ color: "#71717a", fontSize: 13, marginTop: 10 }}>
+        <Text style={{ color: THEME.text.secondary, fontSize: 13, marginTop: 10 }}>
           Avatar upload can connect here later.
         </Text>
       </View>

@@ -1,11 +1,13 @@
 import React from 'react';
 import { ScrollView, View, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useAuthStore } from '../../store/authStore';
 import { ScanCTA } from './components/ScanCTA';
 import { ManualEntryButton } from './components/ManualEntryButton';
 import { RecentSplitsList } from './components/RecentSplitsList';
 import { HomeHeader } from './components/HomeHeader';
+import { THEME } from '../../utils/theme';
 
 const mockRecentSplits = [
   { id: '1', title: 'Dinner at Laparada', total: 255.0, people: 4, date: '2h ago', emoji: '🍣' },
@@ -19,20 +21,37 @@ export default function HomeScreen() {
   const firstName = user?.fullName?.split(' ')[0] ?? 'there';
 
   return (
-    <SafeAreaView className="flex-1 bg-zinc-950" edges={['top']}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: THEME.background.base }} edges={['top']}>
       <StatusBar barStyle="light-content" />
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 48 }}
+      <LinearGradient
+        colors={THEME.background.upper}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0.9 }}
+        style={{ flex: 1 }}
       >
-        <HomeHeader firstName={firstName} />
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 48 }}
+        >
+          <HomeHeader firstName={firstName} />
 
-        <View className="bg-gray-50 rounded-t-3xl -mt-4 px-5 pt-7">
-          <ScanCTA />
-          <ManualEntryButton />
-          <RecentSplitsList splits={mockRecentSplits} />
-        </View>
-      </ScrollView>
+          <LinearGradient
+            colors={THEME.background.lower}
+            style={{
+              borderTopLeftRadius: 28,
+              borderTopRightRadius: 28,
+              marginTop: -16,
+              paddingHorizontal: 20,
+              paddingTop: 28,
+              minHeight: 520,
+            }}
+          >
+            <ScanCTA />
+            <ManualEntryButton />
+            <RecentSplitsList splits={mockRecentSplits} />
+          </LinearGradient>
+        </ScrollView>
+      </LinearGradient>
     </SafeAreaView>
   );
 }

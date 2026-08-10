@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { ChevronRight, Users } from 'lucide-react-native';
+import { THEME } from '../../../utils/theme';
 
 type Split = {
   id: string;
@@ -23,12 +24,14 @@ export function RecentSplitCard({ split }: Props) {
       activeOpacity={0.75}
       className="rounded-3xl overflow-hidden mb-3"
       style={{
-        backgroundColor: '#EDF0F4',
+        backgroundColor: THEME.background.mutedCard,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.05,
+        shadowOpacity: 0.22,
         shadowRadius: 10,
         elevation: 2,
+        borderWidth: 1,
+        borderColor: THEME.border.subtle,
       }}
     >
       <View className="px-4 pt-4 pb-4">
@@ -37,7 +40,7 @@ export function RecentSplitCard({ split }: Props) {
           <View className="flex-row items-center gap-3 flex-1">
             <View
               className="w-12 h-12 rounded-2xl items-center justify-center"
-              style={{ backgroundColor: '#E8E8E8' }}
+              style={{ backgroundColor: THEME.background.chip }}
             >
               <Text className="text-2xl">{split.emoji}</Text>
             </View>
@@ -45,48 +48,48 @@ export function RecentSplitCard({ split }: Props) {
             <View className="flex-1">
               <Text
                 className="text-xl font-bold tracking-tight"
-                style={{ color: '#111111' }}
+                style={{ color: THEME.text.primary }}
                 numberOfLines={1}
               >
                 {split.title}
               </Text>
-              <Text className="text-sm mt-0.5" style={{ color: '#9ca3af' }}>
+              <Text className="text-sm mt-0.5" style={{ color: THEME.text.muted }}>
                 {split.date}
               </Text>
             </View>
           </View>
 
-          <ChevronRight size={24} color="#d1d5db" />
+          <ChevronRight size={24} color={THEME.text.muted} />
         </View>
 
         {/* Divider */}
-        <View className="h-px my-3" style={{ backgroundColor: '#E8E8E8' }} />
+        <View className="h-px my-3" style={{ backgroundColor: THEME.border.subtle }} />
 
         {/* Bottom row */}
         <View className="flex-row items-center justify-between">
           <View
             className="flex-row items-center gap-1.5 px-3 py-1.5 rounded-full"
-            style={{ backgroundColor: '#E8E8E8' }}
+            style={{ backgroundColor: THEME.background.chip }}
           >
-            <Users size={12} color="#6b7280" strokeWidth={2} />
-            <Text className="text-sm font-semibold" style={{ color: '#6b7280' }}>
+            <Users size={12} color={THEME.text.secondary} strokeWidth={2} />
+            <Text className="text-sm font-semibold" style={{ color: THEME.text.secondary }}>
               {split.people} people
             </Text>
           </View>
 
           <View className="flex-row items-baseline gap-2">
             <View className="items-end">
-              <Text className="text-md" style={{ color: '#9ca3af' }}>total</Text>
-              <Text className="text-lg font-bold" style={{ color: '#111111' }}>
+              <Text className="text-md" style={{ color: THEME.text.muted }}>total</Text>
+              <Text className="text-lg font-bold" style={{ color: THEME.text.primary }}>
                 R{split.total.toFixed(2)}
               </Text>
             </View>
 
-            <View className="w-px h-6" style={{ backgroundColor: '#E8E8E8' }} />
+            <View className="w-px h-6" style={{ backgroundColor: THEME.border.subtle }} />
 
             <View className="items-end">
-              <Text className="text-md" style={{ color: '#9ca3af' }}>per person</Text>
-              <Text className="text-lg font-bold" style={{ color: '#10b981' }}>
+              <Text className="text-md" style={{ color: THEME.text.muted }}>per person</Text>
+              <Text className="text-lg font-bold" style={{ color: THEME.accent.cyan }}>
                 R{perPerson}
               </Text>
             </View>

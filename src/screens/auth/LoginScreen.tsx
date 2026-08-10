@@ -10,9 +10,11 @@ import {
   Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Eye, EyeOff, SeparatorVertical } from 'lucide-react-native';
 import { useAuthStore } from '../../store/authStore';
 import { AuthStackScreenProps } from '../../navigation/types';
+import { THEME } from '../../utils/theme';
 
 type Props = AuthStackScreenProps<'Login'>;
 
@@ -38,27 +40,40 @@ export default function LoginScreen({ navigation }: Props) {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <SafeAreaView style={{ flex: 1, backgroundColor: THEME.background.base }}>
+      <LinearGradient colors={THEME.background.upper} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0.9 }} style={{ flex: 1 }}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         className="flex-1"
       >
         <View className="flex-1 justify-center px-6">
           <View className="items-center mb-12">
-            <View className="w-20 h-20 bg-emerald-500 rounded-3xl items-center justify-center mb-4">
+            <LinearGradient
+              colors={THEME.background.button}
+              style={{
+                width: 80,
+                height: 80,
+                borderRadius: 24,
+                alignItems: "center",
+                justifyContent: "center",
+                marginBottom: 16,
+              }}
+            >
               <SeparatorVertical color="white" size={40} />
-            </View>
-            <Text className="text-4xl font-bold text-gray-900 mb-2">
+            </LinearGradient>
+            <Text className="text-4xl font-bold mb-2" style={{ color: THEME.text.primary }}>
               EasySplit
             </Text>
-            <Text className="text-gray-600 text-lg">
+            <Text className="text-lg" style={{ color: THEME.text.secondary }}>
               Scan. Split. Settle.
             </Text>
           </View>
 
           <View className="space-y-4 mb-6">
             <TextInput
-              className="bg-white px-4 py-4 mb-4 rounded-2xl border border-gray-200 text-base"
+              className="px-4 py-4 mb-4 rounded-2xl text-base"
+              style={{ backgroundColor: THEME.background.mutedCard, borderWidth: 1, borderColor: THEME.border.subtle, color: THEME.text.primary }}
+              placeholderTextColor={THEME.text.muted}
               placeholder="Email"
               value={email}
               onChangeText={setEmail}
@@ -67,10 +82,12 @@ export default function LoginScreen({ navigation }: Props) {
               editable={!isLoading}
             />
 
-            <View className="flex-row items-center bg-white rounded-2xl border border-gray-200">
+            <View className="flex-row items-center rounded-2xl" style={{ backgroundColor: THEME.background.mutedCard, borderWidth: 1, borderColor: THEME.border.subtle }}>
 
             <TextInput
               className="flex-1 px-4 py-4 text-base"
+              style={{ color: THEME.text.primary }}
+              placeholderTextColor={THEME.text.muted}
               placeholder="Password"
               value={password}
               onChangeText={setPassword}
@@ -83,8 +100,8 @@ export default function LoginScreen({ navigation }: Props) {
             disabled={isLoading}
             >
               {showPassword 
-                ? <EyeOff size={20} color="#9ca3af" />
-                  : <Eye size={20} color="#9ca3af" />
+                ? <EyeOff size={20} color={THEME.text.muted} />
+                  : <Eye size={20} color={THEME.text.muted} />
                 }
 
             </TouchableOpacity>
@@ -92,28 +109,32 @@ export default function LoginScreen({ navigation }: Props) {
           </View>
 
           <TouchableOpacity
-            className="bg-emerald-500 py-4 rounded-2xl mb-4 items-center"
+            className="rounded-2xl mb-4 overflow-hidden"
             onPress={handleLogin}
             disabled={isLoading}
           >
-            {isLoading ? (
-              <ActivityIndicator color="white" />
-            ) : (
-              <Text className="text-white font-bold text-lg">Sign In</Text>
-            )}
+            <LinearGradient colors={THEME.background.button} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={{ alignItems: "center", paddingVertical: 16 }}>
+              {isLoading ? (
+                <ActivityIndicator color={THEME.text.dark} />
+              ) : (
+                <Text className="font-bold text-lg" style={{ color: THEME.text.dark }}>Sign In</Text>
+              )}
+            </LinearGradient>
           </TouchableOpacity>
 
           <TouchableOpacity
-            className="border border-gray-300 py-4 rounded-2xl mb-6 items-center"
+            className="py-4 rounded-2xl mb-6 items-center"
+            style={{ borderWidth: 1, borderColor: THEME.border.glow, backgroundColor: THEME.background.chip }}
             onPress={() => navigation.navigate('Signup')}
             disabled={isLoading}
           >
-            <Text className="text-gray-700 font-bold text-lg">
+            <Text className="font-bold text-lg" style={{ color: THEME.text.primary }}>
               Create Account
             </Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
+      </LinearGradient>
     </SafeAreaView>
   );
 }
