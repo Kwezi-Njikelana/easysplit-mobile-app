@@ -21,6 +21,7 @@ import EditReceiptScreen from '../screens/receipt/EditReceiptScreen';
 import AssignItemsScreen from '../screens/receipt/AssignItemsScreen';
 import { RootStackParamList, AuthStackParamList, MainTabParamList } from './types';
 import ScanReceiptScreen from '../screens/receipt/ScanReceiptScreen';
+import { THEME } from '../utils/theme';
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 const AuthStack = createNativeStackNavigator<AuthStackParamList>();
@@ -47,12 +48,12 @@ function MainNavigator() {
     <MainTab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#10b981',
-        tabBarInactiveTintColor: '#6b7280',
+        tabBarActiveTintColor: THEME.accent.cyan,
+        tabBarInactiveTintColor: 'rgba(245,255,253,0.45)',
         tabBarStyle: {
-          backgroundColor: '#ffffff',
+          backgroundColor: THEME.background.panel,
           borderTopWidth: 1,
-          borderTopColor: '#e5e7eb',
+          borderTopColor: THEME.border.subtle,
           height: 100,
           paddingBottom: 10,
           paddingTop: 10,
@@ -119,7 +120,7 @@ export default function RootNavigator() {
               options={{
                 headerShown: true,
                 title: 'Scan Receipt',
-                headerStyle: { backgroundColor: '#10b981' },
+                headerStyle: { backgroundColor: THEME.background.panel },
                 headerTintColor: '#fff',
               }}
             />

@@ -1,7 +1,9 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { ScanLine, ChevronRight } from 'lucide-react-native';
+import { THEME } from '../../../utils/theme';
 
 export function ScanCTA() {
   const navigation = useNavigation();
@@ -12,11 +14,26 @@ export function ScanCTA() {
       onPress={() => navigation.navigate('ScanReceipt' as never)}
       className="rounded-3xl overflow-hidden mb-3"
     >
-      <View className="bg-emerald-500 px-6 py-8">
-        {/* Decorative circles */}
-        <View className="absolute -top-8 -right-8 w-36 h-36 rounded-full bg-white/10" />
-        <View className="absolute -bottom-10 -right-2 w-24 h-24 rounded-full bg-white/10" />
-        <View className="absolute top-4 right-24 w-10 h-10 rounded-full bg-white/10" />
+      <LinearGradient
+        colors={THEME.background.card}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={{ paddingHorizontal: 24, paddingVertical: 32 }}
+      >
+        <LinearGradient
+          colors={THEME.background.button}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={{
+            position: "absolute",
+            top: -42,
+            right: -28,
+            width: 190,
+            height: 190,
+            borderRadius: 95,
+            opacity: 0.22,
+          }}
+        />
 
         <View className="bg-white/20 w-14 h-14 rounded-2xl items-center justify-center mb-4">
           <ScanLine color="#fff" size={28} strokeWidth={1.75} />
@@ -33,7 +50,7 @@ export function ScanCTA() {
           </Text>
           <ChevronRight size={14} color="rgba(255,255,255,0.9)" />
         </View>
-      </View>
+      </LinearGradient>
     </TouchableOpacity>
   );
 }

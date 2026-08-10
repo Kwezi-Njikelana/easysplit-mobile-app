@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { LinearGradient } from "expo-linear-gradient";
 import {
   TrendingUp,
   TrendingDown,
@@ -8,6 +9,7 @@ import {
   ArrowUpRight,
   ArrowDownLeft,
 } from "lucide-react-native";
+import { THEME } from "../../utils/theme";
 
 const mockBalances = [
   {
@@ -28,24 +30,7 @@ const mockBalances = [
     lastSplit: "Uber home",
     date: "5h ago",
   },
-  {
-    id: "4",
-    name: "Priya Dlamini",
-    initials: "PD",
-    amount: 87.0,
-    type: "owed_to_you",
-    lastSplit: "Concert tickets",
-    date: "2d ago",
-  },
-  {
-    id: "5",
-    name: "Mike Rossouw",
-    initials: "MR",
-    amount: 33.0,
-    type: "you_owe",
-    lastSplit: "Braai supplies",
-    date: "3d ago",
-  },
+
 ];
 
 const FILTERS = ["All", "Owed to you", "You owe", "Settled"] as const;
@@ -61,14 +46,16 @@ function BalanceCard({ balance }: { balance: Balance }) {
     <TouchableOpacity
       activeOpacity={0.75}
       style={{
-        backgroundColor: "#EDF0F4",
+        backgroundColor: THEME.background.mutedCard,
         borderRadius: 24,
         marginBottom: 12,
         shadowColor: "#000",
         shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.05,
+        shadowOpacity: 0.22,
         shadowRadius: 10,
         elevation: 2,
+        borderWidth: 1,
+        borderColor: THEME.border.subtle,
       }}
     >
       <View style={{ padding: 16 }}>
@@ -95,10 +82,10 @@ function BalanceCard({ balance }: { balance: Balance }) {
                 height: 48,
                 borderRadius: 16,
                 backgroundColor: isSettled
-                  ? "#E8E8E8"
+                  ? THEME.background.chip
                   : isOwedToYou
-                    ? "#d1fae5"
-                    : "#ffe4e6",
+                    ? "rgba(34,226,210,0.15)"
+                    : "rgba(255,91,116,0.14)",
                 alignItems: "center",
                 justifyContent: "center",
               }}
@@ -108,10 +95,10 @@ function BalanceCard({ balance }: { balance: Balance }) {
                   fontSize: 15,
                   fontWeight: "700",
                   color: isSettled
-                    ? "#9ca3af"
+                    ? THEME.text.muted
                     : isOwedToYou
-                      ? "#059669"
-                      : "#f43f5e",
+                      ? THEME.accent.cyan
+                      : THEME.accent.danger,
                 }}
               >
                 {balance.initials}
@@ -123,14 +110,14 @@ function BalanceCard({ balance }: { balance: Balance }) {
                 style={{
                   fontSize: 17,
                   fontWeight: "700",
-                  color: "#111111",
+                  color: THEME.text.primary,
                   letterSpacing: -0.3,
                 }}
               >
                 {balance.name}
               </Text>
               <Text
-                style={{ fontSize: 13, color: "#9ca3af", marginTop: 1 }}
+                style={{ fontSize: 13, color: THEME.text.muted, marginTop: 1 }}
                 numberOfLines={1}
               >
                 {balance.lastSplit} · {balance.date}
@@ -138,12 +125,12 @@ function BalanceCard({ balance }: { balance: Balance }) {
             </View>
           </View>
 
-          <ChevronRight size={20} color="#d1d5db" />
+          <ChevronRight size={20} color={THEME.text.muted} />
         </View>
 
         {/* Divider */}
         <View
-          style={{ height: 1, backgroundColor: "#E8E8E8", marginVertical: 12 }}
+          style={{ height: 1, backgroundColor: THEME.border.subtle, marginVertical: 12 }}
         />
 
         {/* Bottom row */}
@@ -158,14 +145,14 @@ function BalanceCard({ balance }: { balance: Balance }) {
           {isSettled ? (
             <View
               style={{
-                backgroundColor: "#E8E8E8",
+                backgroundColor: THEME.background.chip,
                 borderRadius: 99,
                 paddingHorizontal: 12,
                 paddingVertical: 6,
               }}
             >
               <Text
-                style={{ fontSize: 12, fontWeight: "600", color: "#9ca3af" }}
+                style={{ fontSize: 12, fontWeight: "600", color: THEME.text.muted }}
               >
                 Settled up ✓
               </Text>
@@ -173,7 +160,7 @@ function BalanceCard({ balance }: { balance: Balance }) {
           ) : isOwedToYou ? (
             <View
               style={{
-                backgroundColor: "#d1fae5",
+                backgroundColor: "rgba(34,226,210,0.15)",
                 borderRadius: 99,
                 paddingHorizontal: 12,
                 paddingVertical: 6,
@@ -182,9 +169,9 @@ function BalanceCard({ balance }: { balance: Balance }) {
                 gap: 4,
               }}
             >
-              <ArrowDownLeft size={12} color="#059669" strokeWidth={2.5} />
+              <ArrowDownLeft size={12} color={THEME.accent.cyan} strokeWidth={2.5} />
               <Text
-                style={{ fontSize: 12, fontWeight: "700", color: "#059669" }}
+                style={{ fontSize: 12, fontWeight: "700", color: THEME.accent.cyan }}
               >
                 Owes you
               </Text>
@@ -192,7 +179,7 @@ function BalanceCard({ balance }: { balance: Balance }) {
           ) : (
             <View
               style={{
-                backgroundColor: "#ffe4e6",
+                backgroundColor: "rgba(255,91,116,0.14)",
                 borderRadius: 99,
                 paddingHorizontal: 12,
                 paddingVertical: 6,
@@ -201,9 +188,9 @@ function BalanceCard({ balance }: { balance: Balance }) {
                 gap: 4,
               }}
             >
-              <ArrowUpRight size={12} color="#f43f5e" strokeWidth={2.5} />
+              <ArrowUpRight size={12} color={THEME.accent.danger} strokeWidth={2.5} />
               <Text
-                style={{ fontSize: 12, fontWeight: "700", color: "#f43f5e" }}
+                style={{ fontSize: 12, fontWeight: "700", color: THEME.accent.danger }}
               >
                 You owe
               </Text>
@@ -217,7 +204,7 @@ function BalanceCard({ balance }: { balance: Balance }) {
                 fontSize: 20,
                 fontWeight: "800",
                 letterSpacing: -0.5,
-                color: isOwedToYou ? "#10b981" : "#f43f5e",
+                color: isOwedToYou ? THEME.accent.cyan : THEME.accent.danger,
               }}
             >
               {isOwedToYou ? "+" : "-"}R{balance.amount.toFixed(2)}
@@ -248,22 +235,12 @@ export default function BalancesScreen() {
   });
 
   return (
-    <SafeAreaView
-      style={{ flex: 1, backgroundColor: "#09090b" }}
-      edges={["top"]}
-    >
-      {/* Dark header */}
-      <View
-        style={{
-          paddingHorizontal: 24,
-          paddingTop: 24,
-          paddingBottom: 40,
-          backgroundColor: "#09090b",
-        }}
-      >
+    <SafeAreaView style={{ flex: 1, backgroundColor: THEME.background.base }} edges={["top"]}>
+      <LinearGradient colors={THEME.background.upper} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0.9 }} style={{ flex: 1 }}>
+      <View style={{ paddingHorizontal: 24, paddingTop: 24, paddingBottom: 40 }}>
         <Text
           style={{
-            color: "#34d399",
+            color: THEME.accent.cyan,
             fontSize: 13,
             fontWeight: "600",
             letterSpacing: 3,
@@ -275,7 +252,7 @@ export default function BalancesScreen() {
         </Text>
         <Text
           style={{
-            color: "#ffffff",
+            color: THEME.text.primary,
             fontSize: 34,
             fontWeight: "800",
             letterSpacing: -0.8,
@@ -284,7 +261,7 @@ export default function BalancesScreen() {
         >
           Balances
         </Text>
-        <Text style={{ color: "#71717a", fontSize: 15, marginTop: 6 }}>
+        <Text style={{ color: THEME.text.secondary, fontSize: 15, marginTop: 6 }}>
           Track what's owed between you.
         </Text>
 
@@ -293,9 +270,11 @@ export default function BalancesScreen() {
           <View
             style={{
               flex: 1,
-              backgroundColor: "#18181b",
+              backgroundColor: THEME.background.mutedCard,
               borderRadius: 20,
               padding: 16,
+              borderWidth: 1,
+              borderColor: THEME.border.subtle,
             }}
           >
             <View
@@ -306,10 +285,10 @@ export default function BalancesScreen() {
                 marginBottom: 6,
               }}
             >
-              <TrendingUp size={13} color="#10b981" strokeWidth={2.5} />
+              <TrendingUp size={13} color={THEME.accent.cyan} strokeWidth={2.5} />
               <Text
                 style={{
-                  color: "#71717a",
+                  color: THEME.text.muted,
                   fontSize: 11,
                   fontWeight: "600",
                   letterSpacing: 1.5,
@@ -321,7 +300,7 @@ export default function BalancesScreen() {
             </View>
             <Text
               style={{
-                color: "#10b981",
+                color: THEME.accent.cyan,
                 fontSize: 22,
                 fontWeight: "800",
                 letterSpacing: -0.5,
@@ -334,9 +313,11 @@ export default function BalancesScreen() {
           <View
             style={{
               flex: 1,
-              backgroundColor: "#18181b",
+              backgroundColor: THEME.background.mutedCard,
               borderRadius: 20,
               padding: 16,
+              borderWidth: 1,
+              borderColor: THEME.border.subtle,
             }}
           >
             <View
@@ -347,10 +328,10 @@ export default function BalancesScreen() {
                 marginBottom: 6,
               }}
             >
-              <TrendingDown size={13} color="#f43f5e" strokeWidth={2.5} />
+              <TrendingDown size={13} color={THEME.accent.danger} strokeWidth={2.5} />
               <Text
                 style={{
-                  color: "#71717a",
+                  color: THEME.text.muted,
                   fontSize: 11,
                   fontWeight: "600",
                   letterSpacing: 1.5,
@@ -362,7 +343,7 @@ export default function BalancesScreen() {
             </View>
             <Text
               style={{
-                color: "#f43f5e",
+                color: THEME.text.primary,
                 fontSize: 22,
                 fontWeight: "800",
                 letterSpacing: -0.5,
@@ -373,38 +354,12 @@ export default function BalancesScreen() {
           </View>
         </View>
 
-        {/* Net bar */}
-        <View
-          style={{
-            backgroundColor: "#18181b",
-            borderRadius: 20,
-            padding: 16,
-            marginTop: 10,
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <Text style={{ color: "#71717a", fontSize: 13, fontWeight: "600" }}>
-            Net balance
-          </Text>
-          <Text
-            style={{
-              fontSize: 20,
-              fontWeight: "800",
-              letterSpacing: -0.5,
-              color: net >= 0 ? "#10b981" : "#f43f5e",
-            }}
-          >
-            {net >= 0 ? "+" : ""}R{net.toFixed(2)}
-          </Text>
-        </View>
+      
       </View>
 
-      {/* White card */}
-      <View
+      <LinearGradient
+        colors={THEME.background.lower}
         style={{
-          backgroundColor: "#f9fafb",
           borderTopLeftRadius: 28,
           borderTopRightRadius: 28,
           marginTop: -16,
@@ -413,17 +368,12 @@ export default function BalancesScreen() {
           paddingTop: 28,
         }}
       >
-        {/* Filter pills */}
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          bounces={false}
-          style={{ marginBottom: 20, marginHorizontal: -20 }}
-          contentContainerStyle={{
+        {/* Filter tabs */}
+        <View
+          style={{
             flexDirection: "row",
-            gap: 8,
-            paddingHorizontal: 20,
-            paddingRight: 40,
+            gap: 6,
+            marginBottom: 20,
           }}
         >
           {FILTERS.map((f) => (
@@ -432,31 +382,35 @@ export default function BalancesScreen() {
               activeOpacity={0.8}
               onPress={() => setActiveFilter(f)}
               style={{
-                paddingHorizontal: 16,
-                paddingVertical: 8,
-                borderRadius: 99,
-                backgroundColor: activeFilter === f ? "#111111" : "#E8E8E8",
-                alignSelf: "center", // add this
+                flex: 1,
+                height: 36,
+                borderRadius: 999,
+                backgroundColor: activeFilter === f ? THEME.accent.cyan : THEME.background.chip,
+                alignItems: "center",
+                justifyContent: "center",
+                paddingHorizontal: 6,
               }}
             >
               <Text
+                numberOfLines={1}
+                adjustsFontSizeToFit
                 style={{
-                  fontSize: 13,
+                  fontSize: 12,
                   fontWeight: "600",
-                  color: activeFilter === f ? "#ffffff" : "#6b7280",
+                  color: activeFilter === f ? THEME.text.dark : THEME.text.secondary,
                 }}
               >
                 {f}
               </Text>
             </TouchableOpacity>
           ))}
-        </ScrollView>
+        </View>
 
         <Text
           style={{
             fontSize: 11,
             fontWeight: "700",
-            color: "#9ca3af",
+            color: THEME.text.muted,
             letterSpacing: 2,
             textTransform: "uppercase",
             marginBottom: 12,
@@ -474,7 +428,8 @@ export default function BalancesScreen() {
             <BalanceCard key={b.id} balance={b} />
           ))}
         </ScrollView>
-      </View>
+      </LinearGradient>
+      </LinearGradient>
     </SafeAreaView>
   );
 }

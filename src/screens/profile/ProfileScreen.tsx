@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StatusBar,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -13,6 +14,7 @@ import Constants from "expo-constants";
 import { useAuthStore } from "../../store/authStore";
 import { RootStackParamList } from "../../navigation/types";
 import { ChevronRight } from "lucide-react-native";
+import { THEME } from "../../utils/theme";
 
 function Row({
   label,
@@ -30,18 +32,18 @@ function Row({
       onPress={onPress}
       activeOpacity={0.6}
       className="flex-row items-center justify-between py-4"
-      style={{ borderBottomWidth: 1, borderBottomColor: "#f0f0f0" }}
+      style={{ borderBottomWidth: 1, borderBottomColor: THEME.border.subtle }}
     >
       <Text
         className="text-sm font-medium tracking-wide"
-        style={{ color: danger ? "#ef4444" : "#1a1a1a" }}
+        style={{ color: danger ? THEME.accent.danger : THEME.text.primary }}
       >
         {label}
       </Text>
       {value ? (
-        <Text className="text-sm text-zinc-400">{value}</Text>
+        <Text className="text-sm" style={{ color: THEME.text.muted }}>{value}</Text>
       ) : (
-        <ChevronRight size={24} color="#d1d5db" />
+        <ChevronRight size={24} color={THEME.text.muted} />
       )}
     </TouchableOpacity>
   );
@@ -51,7 +53,7 @@ function SectionLabel({ text }: { text: string }) {
   return (
     <Text
       className="text-xs font-semibold uppercase tracking-widest mt-8 mb-1"
-      style={{ color: "#a3a3a3" }}
+      style={{ color: THEME.text.muted }}
     >
       {text}
     </Text>
@@ -77,27 +79,36 @@ export default function ProfileScreen() {
     .toUpperCase();
 
   return (
-    <SafeAreaView className="flex-1 bg-zinc-950" edges={["top"]}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: THEME.background.base }} edges={["top"]}>
       <StatusBar barStyle="light-content" />
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ flexGrow: 1, paddingBottom: 48 }}
-      >
+      <LinearGradient colors={THEME.background.upper} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0.9 }} style={{ flex: 1 }}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1, paddingBottom: 48 }}>
         <View className="px-5 pt-6 pb-10">
-          <Text className="text-emerald-400 text-base mb-1 tracking-wide">
+          <Text className="text-base mb-1 tracking-wide" style={{ color: THEME.accent.cyan }}>
             Account
           </Text>
           <Text className="text-white text-3xl font-bold">{firstName}</Text>
         </View>
 
-        <View className="bg-gray-50 rounded-3xl -mt-4 px-5 pt-8 flex-grow">
+        <LinearGradient
+          colors={THEME.background.lower}
+          style={{
+            borderRadius: 28,
+            marginTop: -16,
+            paddingHorizontal: 20,
+            paddingTop: 32,
+            flexGrow: 1,
+          }}
+        >
           <View className="flex-row items-center gap-4 mb-2">
             <View
               style={{
                 width: 64,
                 height: 64,
                 borderRadius: 32,
-                backgroundColor: "#18181b",
+                backgroundColor: THEME.background.mutedCard,
+                borderWidth: 1,
+                borderColor: THEME.border.glow,
                 alignItems: "center",
                 justifyContent: "center",
               }}
@@ -116,13 +127,13 @@ export default function ProfileScreen() {
 
             <View className="flex-1">
               <Text
-                className="text-zinc-900 font-bold text-4xl"
+                className="font-bold text-4xl text-white"
                 style={{ fontSize: 18, lineHeight: 24 }}
               >
                 {fullName}
               </Text>
               {email ? (
-                <Text className="text-zinc-400 text-base mt-0.5">{email}</Text>
+                <Text className="text-base mt-0.5" style={{ color: THEME.text.secondary }}>{email}</Text>
               ) : null}
             </View>
 
@@ -135,12 +146,12 @@ export default function ProfileScreen() {
                 paddingVertical: 6,
                 borderRadius: 999,
                 borderWidth: 1,
-                borderColor: "#e4e4e7",
-                backgroundColor: "#fff",
+                borderColor: THEME.border.glow,
+                backgroundColor: THEME.background.chip,
               }}
             >
               <Text
-                style={{ fontSize: 12, color: "#52525b", fontWeight: "500" }}
+                style={{ fontSize: 12, color: THEME.accent.cyan, fontWeight: "500" }}
               >
                 Edit
               </Text>
@@ -195,13 +206,13 @@ export default function ProfileScreen() {
               style={{
                 paddingVertical: 15,
                 borderRadius: 16,
-                backgroundColor: "#fff",
+                backgroundColor: "transparent",
                 borderWidth: 1,
-                borderColor: "#F0055A",
+                borderColor: THEME.accent.danger,
                 alignItems: "center",
               }}
             >
-              <Text className="text-lg border-raspberryRedColor font-semibold bg-white text-raspberryRedColor">
+              <Text className="text-lg font-semibold" style={{ color: THEME.accent.danger }}>
                 Log Out
               </Text>
             </TouchableOpacity>
@@ -209,12 +220,13 @@ export default function ProfileScreen() {
 
           <Text
             className="text-center text-xs mt-8"
-            style={{ color: "#d4d4d4" }}
+            style={{ color: THEME.text.muted }}
           >
             EasySplit v{APP_VERSION}
           </Text>
-        </View>
+        </LinearGradient>
       </ScrollView>
+      </LinearGradient>
     </SafeAreaView>
   );
 }
