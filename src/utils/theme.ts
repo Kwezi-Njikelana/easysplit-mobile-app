@@ -23,7 +23,7 @@ export const THEME = {
     cyan: "#22e2d2",
     cyanDeep: "#19bcd5",
     teal: "#0d8178",
-    danger: "#ff5b74",
+    danger: "#ff4085",
     success: "#22e2d2",
   },
 };
